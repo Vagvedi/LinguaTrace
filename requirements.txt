@@ -3,3 +3,11 @@ Werkzeug==3.0.1
 scikit-learn==1.4.1.post1
 numpy==1.26.4
 nltk==3.8.1
+Pillow==10.2.0
+opencv-python==4.9.0.80
+textblob==0.17.1
+requests==2.31.0
+tailwindcss==3.4.1
+postcss==8.4.38
+autoprefixer==10.4.19
+python-dotenv==1.0.0

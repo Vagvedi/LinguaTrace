@@ -1,0 +1,73 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  darkMode: "class",
+  content: [
+    "./templates/**/*.html",
+    "./static/js/**/*.js",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        "on-surface": "#2e3230",
+        "tertiary-container": "#c4a66a",
+        "surface-variant": "#e4e0d8",
+        "primary-container": "#78a886",
+        "primary": "#4a7c59",
+        "tertiary-fixed-dim": "#dcc48e",
+        "inverse-primary": "#8ecf9e",
+        "secondary-fixed-dim": "#d4ccbf",
+        "surface-dim": "#dbd7cf",
+        "on-error-container": "#690005",
+        "on-primary-fixed-variant": "#2a6038",
+        "on-background": "#2e3230",
+        "surface-container-highest": "#e4e0d8",
+        "on-primary": "#ffffff",
+        "surface": "#faf6f0",
+        "on-secondary-fixed": "#1e1a13",
+        "surface-bright": "#faf6f0",
+        "on-secondary-container": "#5e5548",
+        "surface-container-high": "#eae6de",
+        "error": "#b83230",
+        "primary-fixed": "#c8e8d0",
+        "surface-container-lowest": "#ffffff",
+        "background": "#faf6f0",
+        "on-secondary-fixed-variant": "#4a4538",
+        "on-primary-container": "#d8f0de",
+        "secondary": "#6b6358",
+        "on-surface-variant": "#4a4e4a",
+        "inverse-on-surface": "#f5f0e8",
+        "secondary-fixed": "#f0e8db",
+        "on-secondary": "#ffffff",
+        "tertiary": "#705c30",
+        "surface-tint": "#4a7c59",
+        "outline": "#74796e",
+        "tertiary-fixed": "#f8e0a8",
+        "surface-container": "#f0ece4",
+        "on-tertiary-fixed-variant": "#554020",
+        "on-tertiary-container": "#554020",
+        "on-error": "#ffffff",
+        "outline-variant": "#c4c8bc",
+        "primary-fixed-dim": "#8ecf9e",
+        "on-primary-fixed": "#002110",
+        "secondary-container": "#f0e8db",
+        "on-tertiary": "#ffffff",
+        "inverse-surface": "#2e3230",
+        "surface-container-low": "#f5f1ea",
+        "error-container": "#ffdad8",
+        "on-tertiary-fixed": "#221a05"
+      },
+      borderRadius: {
+        "DEFAULT": "0.5rem",
+        "lg": "1rem",
+        "xl": "1.5rem",
+        "full": "9999px"
+      },
+      fontFamily: {
+        "headline": ["Literata"],
+        "body": ["Nunito Sans"],
+        "label": ["Nunito Sans"]
+      }
+    },
+  },
+  plugins: [],
+}
