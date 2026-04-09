@@ -99,6 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ──────────────── Navigation ────────────────
     function switchView(target) {
+        // Validate target
+        if (!target || (target !== 'dashboard' && target !== 'history' && target !== 'insights' && target !== 'support')) {
+            return;
+        }
+        
         // Hide all view sections
         document.querySelectorAll('[data-view]').forEach(sec => sec.classList.add('hidden'));
         
@@ -109,6 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
             targetSec.classList.remove('fade-in');
             void targetSec.offsetWidth; // reflow to restart animation
             targetSec.classList.add('fade-in');
+        } else {
+            return;
         }
         
         // Update navigation styling for both top nav and side nav
@@ -122,23 +129,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update navigation styling function
     function updateNavigationStyling(target) {
         // Top nav styling
-        document.querySelectorAll('.nav-link').forEach(a => {
-            const isActive = a.dataset.nav === target;
-            a.classList.toggle('text-[#4a7c59]', isActive);
-            a.classList.toggle('border-b-2', isActive);
-            a.classList.toggle('pb-1', isActive);
-            a.classList.toggle('active-nav', isActive);
-            a.classList.toggle('text-stone-500', !isActive);
-        });
+        const topNavLinks = document.querySelectorAll('#top-nav .nav-link');
+        if (topNavLinks.length > 0) {
+            topNavLinks.forEach(a => {
+                const isActive = a.dataset.nav === target;
+                a.classList.toggle('text-[#4a7c59]', isActive);
+                a.classList.toggle('border-b-2', isActive);
+                a.classList.toggle('border-[#4a7c59]', isActive);
+                a.classList.toggle('active-nav', isActive);
+                a.classList.toggle('text-stone-500', !isActive);
+                a.classList.toggle('hover:text-[#4a7c59]', !isActive);
+                a.classList.toggle('hover:bg-stone-100', !isActive);
+            });
+        }
         
-        // Side nav styling
-        document.querySelectorAll('.side-nav-link').forEach(a => {
-            const isActive = a.dataset.nav === target;
-            a.classList.toggle('text-[#4a7c59]', isActive);
-            a.classList.toggle('font-bold', isActive);
-            a.classList.toggle('bg-stone-200/50', isActive);
-            a.classList.toggle('text-stone-600', !isActive);
-        });
+        // Side nav styling (including Support link)
+        const sideNavLinks = document.querySelectorAll('.side-nav-link, [data-nav="support"]');
+        if (sideNavLinks.length > 0) {
+            sideNavLinks.forEach(a => {
+                const isActive = a.dataset.nav === target;
+                a.classList.toggle('text-[#4a7c59]', isActive);
+                a.classList.toggle('font-bold', isActive);
+                a.classList.toggle('bg-stone-200/50', isActive);
+                a.classList.toggle('text-stone-600', !isActive);
+            });
+        }
+        
+        // Mobile nav styling
+        const mobileNavLinks = document.querySelectorAll('#mobileMenu .nav-link');
+        if (mobileNavLinks.length > 0) {
+            mobileNavLinks.forEach(a => {
+                const isActive = a.dataset.nav === target;
+                a.classList.toggle('active-nav', isActive);
+                a.classList.toggle('text-[#4a7c59]', isActive);
+                a.classList.toggle('text-stone-500', !isActive);
+            });
+        }
         
         // Close mobile menu if open
         const mobileMenu = document.getElementById('mobileMenu');
@@ -147,16 +173,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    document.querySelectorAll('.nav-link, .side-nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            switchView(link.dataset.nav);
-            // Close mobile menu if open
-            const mobileMenu = document.getElementById('mobileMenu');
-            if (mobileMenu) {
-                mobileMenu.classList.remove('active');
-            }
+    // Set up navigation event listeners
+    function setupNavigationListeners() {
+        // Handle all navigation links (top nav, side nav, and mobile nav)
+        const navLinks = document.querySelectorAll('[data-nav]');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = link.dataset.nav;
+                if (target) {
+                    switchView(target);
+                }
+            });
         });
-    });
+    }
+    
+    // Set up navigation after DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupNavigationListeners);
+    } else {
+        setupNavigationListeners();
+    }
     
     // Mobile menu toggle
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -483,9 +521,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ──────────────── History ────────────────
     async function loadHistory() {
-        historyLoading.classList.remove('hidden');
-        historyTable.classList.add('hidden');
-        historyEmpty.classList.add('hidden');
+        // Get DOM elements safely
+        const historyLoadingEl = document.getElementById('history-loading');
+        const historyTableEl = document.getElementById('history-table');
+        const historyEmptyEl = document.getElementById('history-empty');
+        const historyTbodyEl = document.getElementById('history-tbody');
+        
+        if (historyLoadingEl) historyLoadingEl.classList.remove('hidden');
+        if (historyTableEl) historyTableEl.classList.add('hidden');
+        if (historyEmptyEl) historyEmptyEl.classList.add('hidden');
 
         try {
             const res = await fetch('/history');
@@ -493,67 +537,74 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!res.ok) throw new Error(data.error || 'Failed to load history');
 
             const analyses = data.analyses || [];
-            historyLoading.classList.add('hidden');
+            if (historyLoadingEl) historyLoadingEl.classList.add('hidden');
 
             if (analyses.length === 0) {
-                historyEmpty.classList.remove('hidden');
+                if (historyEmptyEl) historyEmptyEl.classList.remove('hidden');
                 return;
             }
 
-            historyTbody.innerHTML = analyses.map((a, i) => {
-                const isSame = a.prediction === 'Same Author' || a.prediction === 'YES';
-                const verdictClass = isSame
-                    ? 'bg-primary/10 text-primary'
-                    : 'bg-red-50 text-red-700';
-                const confClass = a.confidence === 'High'
-                    ? 'bg-primary/10 text-primary'
-                    : a.confidence === 'Medium'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-stone-100 text-stone-600';
+            if (historyTbodyEl) {
+                historyTbodyEl.innerHTML = analyses.map((a, i) => {
+                    const isSame = a.prediction === 'Same Author' || a.prediction === 'YES';
+                    const verdictClass = isSame
+                        ? 'bg-primary/10 text-primary'
+                        : 'bg-red-50 text-red-700';
+                    const confClass = a.confidence === 'High'
+                        ? 'bg-primary/10 text-primary'
+                        : a.confidence === 'Medium'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-stone-100 text-stone-600';
 
-                return `
-                    <tr class="history-row transition-colors">
-                        <td class="px-6 py-4 text-sm text-stone-400">${i + 1}</td>
-                        <td class="px-6 py-4 text-sm text-stone-600">${a.date}</td>
-                        <td class="px-6 py-4 text-center">
-                            <span class="text-lg font-bold text-primary">${a.similarity}%</span>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${verdictClass}">
-                                ${isSame ? 'Same Author' : 'Different Author'}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${confClass}">
-                                ${a.confidence}
-                            </span>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+                    return `
+                        <tr class="history-row transition-colors">
+                            <td class="px-6 py-4 text-sm text-stone-400">${i + 1}</td>
+                            <td class="px-6 py-4 text-sm text-stone-600">${a.date}</td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="text-lg font-bold text-primary">${a.similarity}%</span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold ${verdictClass}">
+                                    ${isSame ? 'Same Author' : 'Different Author'}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold ${confClass}">
+                                    ${a.confidence}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
 
-            historyTable.classList.remove('hidden');
+            if (historyTableEl) historyTableEl.classList.remove('hidden');
         } catch (err) {
-            historyLoading.classList.add('hidden');
+            if (historyLoadingEl) historyLoadingEl.classList.add('hidden');
             showToast(err.message, 'error');
         }
     }
 
     // ──────────────── Insights ────────────────
     async function loadInsights() {
-        insightsLoading.classList.remove('hidden');
-        insightsEmpty.classList.add('hidden');
-        insightsStatsGrid.innerHTML = '';
+        // Get DOM elements safely
+        const insightsLoadingEl = document.getElementById('insights-loading');
+        const insightsEmptyEl = document.getElementById('insights-empty');
+        const insightsStatsGridEl = document.getElementById('insights-stats-grid');
+        
+        if (insightsLoadingEl) insightsLoadingEl.classList.remove('hidden');
+        if (insightsEmptyEl) insightsEmptyEl.classList.add('hidden');
+        if (insightsStatsGridEl) insightsStatsGridEl.innerHTML = '';
 
         try {
             const res = await fetch('/insights');
             const data = await res.json();
-            insightsLoading.classList.add('hidden');
+            if (insightsLoadingEl) insightsLoadingEl.classList.add('hidden');
 
             if (!res.ok) throw new Error(data.error || 'Failed to load insights');
 
             if (data.total_analyses === 0) {
-                insightsEmpty.classList.remove('hidden');
+                if (insightsEmptyEl) insightsEmptyEl.classList.remove('hidden');
                 return;
             }
 
@@ -592,19 +643,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             ];
 
-            insightsStatsGrid.innerHTML = cards.map(c => `
-                <div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_20px_rgba(46,50,48,0.06)]">
-                    <div class="w-10 h-10 rounded-full ${c.bg} flex items-center justify-center ${c.color} mb-4">
-                        <span class="material-symbols-outlined">${c.icon}</span>
+            if (insightsStatsGridEl) {
+                insightsStatsGridEl.innerHTML = cards.map(c => `
+                    <div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 shadow-[0_4px_20px_rgba(46,50,48,0.06)]">
+                        <div class="w-10 h-10 rounded-full ${c.bg} flex items-center justify-center ${c.color} mb-4">
+                            <span class="material-symbols-outlined">${c.icon}</span>
+                        </div>
+                        <p class="text-xs text-stone-400 font-semibold uppercase tracking-wider mb-1">${c.label}</p>
+                        <p class="text-3xl font-bold ${c.color}">${c.value}</p>
+                        <p class="text-xs text-stone-400 mt-1">${c.unit}</p>
                     </div>
-                    <p class="text-xs text-stone-400 font-semibold uppercase tracking-wider mb-1">${c.label}</p>
-                    <p class="text-3xl font-bold ${c.color}">${c.value}</p>
-                    <p class="text-xs text-stone-400 mt-1">${c.unit}</p>
-                </div>
-            `).join('');
+                `).join('');
+            }
 
         } catch (err) {
-            insightsLoading.classList.add('hidden');
+            if (insightsLoadingEl) insightsLoadingEl.classList.add('hidden');
             showToast(err.message, 'error');
         }
     }

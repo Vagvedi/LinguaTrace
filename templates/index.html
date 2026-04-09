@@ -224,14 +224,14 @@
     </div>
 
     <div class="mt-auto border-t border-stone-100 pt-4">
-        <a class="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 transition-all duration-200 rounded-xl cursor-pointer">
+        <a data-nav="support" class="flex items-center gap-3 px-4 py-3 text-stone-600 hover:bg-stone-100 transition-all duration-200 rounded-xl cursor-pointer">
             <span class="material-symbols-outlined">contact_support</span><span>Support</span>
         </a>
     </div>
 </aside>
 
 <!-- ───────────── MAIN CONTENT ───────────── -->
-<main class="flex-1 p-6 md:p-8 overflow-y-auto">
+<main class="flex-1 p-6 md:p-8 min-h-screen overflow-y-auto">
 
     <!-- ═══════════ DASHBOARD VIEW ═══════════ -->
     <section data-view="dashboard" class="max-w-6xl mx-auto space-y-8 fade-in">
@@ -447,50 +447,7 @@
                 </div>
             </div>
 
-                <!-- Key Stylistic Markers -->
-                <div class="mt-8 space-y-4">
-                    <h4 class="text-sm font-bold text-stone-400 uppercase tracking-widest">Key Stylistic Markers</h4>
-                    <div class="flex flex-wrap gap-3" id="insights-list">
-                        <!-- Insights will be populated here dynamically -->
-                    </div>
-                </div>
-
-                <!-- Deep Style Metrics -->
-                <div class="mt-8 space-y-4">
-                    <h4 class="text-sm font-bold text-stone-400 uppercase tracking-widest">Deep Style Metrics</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-surface rounded-lg p-4 border border-stone-100">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="material-symbols-outlined text-primary">analytics</span>
-                                <span class="text-sm font-semibold text-stone-600">Character Patterns</span>
-                            </div>
-                            <div class="text-xs text-stone-500" id="char-patterns">Analyzing...</div>
                         </div>
-                        <div class="bg-surface rounded-lg p-4 border border-stone-100">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="material-symbols-outlined text-tertiary">timeline</span>
-                                <span class="text-sm font-semibold text-stone-600">Writing Rhythm</span>
-                            </div>
-                            <div class="text-xs text-stone-500" id="writing-rhythm">Analyzing...</div>
-                        </div>
-                        <div class="bg-surface rounded-lg p-4 border border-stone-100">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="material-symbols-outlined text-primary-container">format_quote</span>
-                                <span class="text-sm font-semibold text-stone-600">Syntax Structure</span>
-                            </div>
-                            <div class="text-xs text-stone-500" id="syntax-structure">Analyzing...</div>
-                        </div>
-                        <div class="bg-surface rounded-lg p-4 border border-stone-100">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="material-symbols-outlined text-tertiary">psychology_alt</span>
-                                <span class="text-sm font-semibold text-stone-600">Semantic Patterns</span>
-                            </div>
-                            <div class="text-xs text-stone-500" id="semantic-patterns">Analyzing...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- ═══════════ HISTORY VIEW ═══════════ -->
@@ -553,6 +510,82 @@
                 <span class="material-symbols-outlined text-5xl text-stone-300 block mb-3">insights</span>
                 <p class="text-stone-500 font-medium">No data yet</p>
                 <p class="text-stone-400 text-sm mt-1">Insights appear after you run at least one analysis</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ SUPPORT VIEW ═══════════ -->
+    <section data-view="support" class="max-w-5xl mx-auto hidden fade-in">
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-on-surface">Support & Help</h2>
+            <p class="text-stone-500 text-sm mt-1">Get help with LinguaTrace and learn more about writing style analysis</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Help Section -->
+            <div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_4px_20px_rgba(46,50,48,0.06)] border border-outline-variant/30">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-xl">help_outline</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-on-surface">Frequently Asked Questions</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="border-b border-stone-100 pb-4">
+                        <h4 class="font-semibold text-stone-700 mb-2">How accurate is the analysis?</h4>
+                        <p class="text-sm text-stone-600">Our AI-powered analysis provides highly accurate authorship attribution based on multiple linguistic features including vocabulary, sentence structure, and writing patterns.</p>
+                    </div>
+                    <div class="border-b border-stone-100 pb-4">
+                        <h4 class="font-semibold text-stone-700 mb-2">What text length is recommended?</h4>
+                        <p class="text-sm text-stone-600">For best results, provide at least 100 words per sample. Longer texts (500+ words) provide more reliable analysis.</p>
+                    </div>
+                    <div class="pb-4">
+                        <h4 class="font-semibold text-stone-700 mb-2">Can I analyze multiple languages?</h4>
+                        <p class="text-sm text-stone-600">Currently, LinguaTrace works best with English text. Support for additional languages is coming soon.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Section -->
+            <div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_4px_20px_rgba(46,50,48,0.06)] border border-outline-variant/30">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-tertiary text-xl">contact_support</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-on-surface">Contact Support</h3>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <span class="material-symbols-outlined text-stone-400 mt-1">email</span>
+                        <div>
+                            <h4 class="font-semibold text-stone-700">Email Support</h4>
+                            <p class="text-sm text-stone-600">support@linguatrace.ai</p>
+                            <p class="text-xs text-stone-400 mt-1">Response within 24 hours</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <span class="material-symbols-outlined text-stone-400 mt-1">chat</span>
+                        <div>
+                            <h4 class="font-semibold text-stone-700">Live Chat</h4>
+                            <p class="text-sm text-stone-600">Available Monday-Friday, 9AM-6PM EST</p>
+                            <button class="mt-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
+                                Start Chat
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <span class="material-symbols-outlined text-stone-400 mt-1">description</span>
+                        <div>
+                            <h4 class="font-semibold text-stone-700">Documentation</h4>
+                            <p class="text-sm text-stone-600">Comprehensive guides and API documentation</p>
+                            <a href="#" class="text-primary text-sm hover:underline">View Documentation →</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
