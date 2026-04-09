@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital DNA | AI Fingerprinting</title>
+    <!-- Modern Web Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Phosphor Icons for elegant UI icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="background-effects">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <main class="container">
+        <header class="header">
+            <h1 class="gradient-text"><i class="ph ph-fingerprint"></i> Digital DNA Analyzer</h1>
+            <p>AI-Based Writing Style Fingerprinting System</p>
+        </header>
+
+        <section class="controls">
+            <button id="btn-sample-casual" class="btn-secondary"><i class="ph ph-chat-text"></i> Load Casual Sample</button>
+            <button id="btn-sample-formal" class="btn-secondary"><i class="ph ph-article"></i> Load Formal Sample</button>
+            <button id="btn-sample-social" class="btn-secondary"><i class="ph ph-twitter-logo"></i> Load Social Media</button>
+            <button id="btn-clear" class="btn-danger"><i class="ph ph-trash"></i> Clear All</button>
+        </section>
+
+        <section class="input-section">
+            <div class="input-card">
+                <h3><i class="ph ph-file-text"></i> Text Sample A</h3>
+                <textarea id="textA" placeholder="Paste the first text sample here... (min 10 words)"></textarea>
+                <div class="word-count">Words: <span id="countA">0</span></div>
+            </div>
+            
+            <div class="input-card">
+                <h3><i class="ph ph-file-text"></i> Text Sample B</h3>
+                <textarea id="textB" placeholder="Paste the second text sample here... (min 10 words)"></textarea>
+                <div class="word-count">Words: <span id="countB">0</span></div>
+            </div>
+        </section>
+
+        <div class="action-section">
+            <button id="btn-analyze" class="btn-primary">
+                <span>Analyze Digital DNA</span>
+                <i class="ph ph-sparkle"></i>
+            </button>
+        </div>
+        
+        <div id="error-msg" class="error-toast hidden"></div>
+
+        <div id="loading" class="hidden loading-container">
+            <div class="spinner"></div>
+            <p>Extracting cognitive features & stylometric patterns...</p>
+        </div>
+
+        <section id="results-panel" class="results-panel hidden fade-in">
+            <h2><i class="ph ph-chart-bar"></i> Analysis Report</h2>
+            
+            <div class="results-grid">
+                <div class="result-card main-score">
+                    <div class="meter-container">
+                        <svg class="circular-chart" viewBox="0 0 36 36">
+                            <path class="circle-bg"
+                                d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                            />
+                            <path class="circle" id="score-circle"
+                                stroke-dasharray="0, 100"
+                                d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                            />
+                            <text x="18" y="20.35" class="percentage" id="score-text">0%</text>
+                        </svg>
+                        <div class="score-label">Similarity Score</div>
+                    </div>
+                </div>
+
+                <div class="result-card verdict-card">
+                    <div class="verdict-box">
+                        <h4>Same Author Prediction</h4>
+                        <div id="prediction-badge" class="badge">--</div>
+                    </div>
+                    <div class="verdict-box">
+                        <h4>Confidence Level</h4>
+                        <div id="confidence-badge" class="badge">--</div>
+                    </div>
+                </div>
+
+                <div class="result-card insights-card">
+                    <h3><i class="ph ph-lightbulb"></i> Explainability Insights</h3>
+                    <ul id="insights-list">
+                        <!-- Populated dynamically -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="stats-comparison">
+                <h3><i class="ph ph-sliders"></i> Stylometric Breakdown</h3>
+                <div class="comparison-table">
+                    <div class="col-header">Metric</div>
+                    <div class="col-header">Text A</div>
+                    <div class="col-header">Text B</div>
+                    
+                    <div class="row-label">Avg Sentence Length</div>
+                    <div class="stat-value" id="stat-sl-a">--</div>
+                    <div class="stat-value" id="stat-sl-b">--</div>
+                    
+                    <div class="row-label">Vocabulary Richness</div>
+                    <div class="stat-value" id="stat-vr-a">--</div>
+                    <div class="stat-value" id="stat-vr-b">--</div>
+
+                    <div class="row-label">Tone Detection</div>
+                    <div class="stat-value tone-badge" id="stat-tone-a">--</div>
+                    <div class="stat-value tone-badge" id="stat-tone-b">--</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
